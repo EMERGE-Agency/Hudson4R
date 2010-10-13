@@ -10,9 +10,10 @@ class TC_Hudson4R_HudsonTool < Test::Unit::TestCase
     @hudson = Hudson4R::HudsonTool.new("Your Server")
   end
   
-  def test_get_projects
-    result = @hudson.get_projects
+  def test_get_jobs
+    result = @hudson.get_jobs
     assert_kind_of(Hash, result)
+    assert(result['justin_sandbox_com'])
   end
   
   def test_trigger_build
