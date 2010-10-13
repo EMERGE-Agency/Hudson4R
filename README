@@ -1,0 +1,2 @@
+A ruby wrapper for hudson functionality. 
+Will initially trigger particular targets based on parameters
