@@ -25,9 +25,15 @@ module	Hudson4R
       jobs
     end
     
-    def trigger_build
+    def trigger_build(job_name, options = {})
       
     end
+    
+    
+    def find_job(job_name)
+      get_api['jobs'].detect{|job| job['name'].eql? job_name}
+    end
+    
     
     private
     def get_api

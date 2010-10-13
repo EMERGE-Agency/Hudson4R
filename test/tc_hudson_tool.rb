@@ -17,8 +17,13 @@ class TC_Hudson4R_HudsonTool < Test::Unit::TestCase
   end
   
   def test_trigger_build
-    @hudson.trigger_build('koopmanostbo_com')
-    
+    result = @hudson.trigger_build('koopmanostbo_com')
+    assert(result)
+  end
+  
+  def test_find_job
+    result = @hudson.find_job('koopmanostbo_com')
+    assert_equal(result['name'], 'koopmanostbo_com')
   end
   
   def teardown
