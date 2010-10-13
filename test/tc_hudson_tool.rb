@@ -17,10 +17,11 @@ class TC_Hudson4R_HudsonTool < Test::Unit::TestCase
   end
   
   def test_trigger_build
+    @hudson.trigger_build('koopmanostbo_com')
     
   end
   
   def teardown
-    
+    @hudson = nil
   end
 end

@@ -13,7 +13,7 @@ require 'json'
 module	Hudson4R
   class HudsonTool
     def initialize(server)
-      @hudson = server += '/api/json'
+      @hudson = server
     end
     
     #Get the availible jobs and returns them in a hash. The job names are the key.
@@ -31,7 +31,7 @@ module	Hudson4R
     
     private
     def get_api
-      url = URI.parse(@hudson)
+      url = URI.parse(@hudson + '/api/json')
       req = Net::HTTP::Get.new(url.path)
       res = Net::HTTP.start(url.host, url.port) {|http|
         http.request(req)
