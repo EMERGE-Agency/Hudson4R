@@ -1,6 +1,6 @@
 require 'net/http'
 require 'uri'
-
+require 'json'
 =begin
   This modules purpose is two-fold. 
   It is meant to pull information 
@@ -49,13 +49,18 @@ module	Hudson4R
     def hudson_request(method, options = {})
       uri = URI.parse("#{@hudson}#{method}")
       unless options.empty?
-        res = Net::HTTP::post_form(uri, options.to_json)
+        res = Net::HTTP::post_form(uri, options)
       else
         res = Net::HTTP.get_response(uri)
       end
       
-      from_json(res.body)
+      if res.code =~ /2\d\d/
+        JSON::Pure::Parser.new(res.body).parse unless res.body.empty?
+      elsif res.code =~ /3\d\d/
+        true
+      else 
+        false
+      end
     end
-
   end
 end
