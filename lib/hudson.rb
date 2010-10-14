@@ -1,0 +1,61 @@
+require 'net/http'
+require 'uri'
+
+=begin
+  This modules purpose is two-fold. 
+  It is meant to pull information 
+  from Hudson and make it availible. 
+  In addition, it should trigger 
+  build using passed in parameters.
+=end
+
+module	Hudson4R
+  class Hudson
+    def initialize(server)
+      @hudson = server
+    end
+    
+    #Get the availible jobs and returns them in a hash. The job names are the key.
+    def get_jobs
+      jobs = {}
+      get_api['jobs'].each do |job|
+        jobs.store(job['name'],job)
+      end
+      jobs
+    end
+    
+    def get_queue
+      hudson_request('/queue/api/json')
+    end
+    
+    def trigger_build(job_name, options = {})
+      if get_jobs.has_key? job_name
+        hudson_request("/job/#{job_name}/buildWithParameters", options)
+      else
+        false
+      end
+    end
+    
+    def find_job(job_name)
+      get_api['jobs'].detect{|job| job['name'].eql? job_name}
+    end
+    
+    private
+    def get_api
+      hudson_request('/api/json')
+    end
+
+    #This wraps the http calls and returns ruby data structures.
+    def hudson_request(method, options = {})
+      uri = URI.parse("#{@hudson}#{method}")
+      unless options.empty?
+        res = Net::HTTP::post_form(uri, options.to_json)
+      else
+        res = Net::HTTP.get_response(uri)
+      end
+      
+      from_json(res.body)
+    end
+
+  end
+end
