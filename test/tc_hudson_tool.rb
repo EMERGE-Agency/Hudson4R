@@ -21,8 +21,12 @@ class TC_Hudson4R_HudsonTool < Test::Unit::TestCase
     assert(result.has_key? 'items')
   end
   
-  def test_trigger_build_good_job
+  def test_trigger_build_good_job_with_params
     assert(@hudson.trigger_build('justin_sandbox_com', {'issue_key'=>'SP-4'}))
+  end
+  
+  def test_trigger_build_good_job_without_params
+    assert(@hudson.trigger_build('irispmt_com'))
   end
   
   def test_trigger_build_bad_job

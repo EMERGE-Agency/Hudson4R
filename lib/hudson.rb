@@ -30,7 +30,11 @@ module	Hudson4R
     
     def trigger_build(job_name, options = {})
       if get_jobs.has_key? job_name
-        hudson_request("/job/#{job_name}/buildWithParameters", options)
+        if options.empty?
+          hudson_request("/job/#{job_name}/build")
+        else
+          hudson_request("/job/#{job_name}/buildWithParameters", options)          
+        end
       else
         false
       end
