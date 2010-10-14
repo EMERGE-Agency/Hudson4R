@@ -15,7 +15,7 @@ module	Hudson4R
       @hudson = server
     end
     
-    #Get the availible jobs and returns them in a hash. The job names are the key.
+    #Get the availible jobs and returns them in a hash. The hash keys are the job names.
     def get_jobs
       jobs = {}
       get_api['jobs'].each do |job|
