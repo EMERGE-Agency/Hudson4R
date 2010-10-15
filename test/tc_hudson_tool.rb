@@ -1,4 +1,5 @@
 require 'pp'
+require 'yaml'
 require 'rubygems'
 gem 'test-unit'
 require 'test/unit'
@@ -7,13 +8,14 @@ require 'lib/hudson'
 
 class TC_Hudson4R_HudsonTool < Test::Unit::TestCase
   def setup
-    @hudson = Hudson4R::Hudson.new("Your Server")
+    @fixtures = YAML.load_file("test/fixtures.yaml")
+    @hudson = Hudson4R::Hudson.new(@fixtures['hudson_server'])
   end
   
   def test_get_jobs
     result = @hudson.get_jobs
     assert_kind_of(Hash, result)
-    assert(result['justin_sandbox_com'])
+    assert(result[@fixtures['known_job'].first])
   end
   
   def test_get_queue
@@ -22,20 +24,20 @@ class TC_Hudson4R_HudsonTool < Test::Unit::TestCase
   end
   
   def test_trigger_build_good_job_with_params
-    assert(@hudson.trigger_build('justin_sandbox_com', {'issue_key'=>'SP-4'}))
+    assert(@hudson.trigger_build(*@fixtures['known_job_with_params']))
   end
   
   def test_trigger_build_good_job_without_params
-    assert(@hudson.trigger_build('irispmt_com'))
+    assert(@hudson.trigger_build(@fixtures['known_job'].first))
   end
   
   def test_trigger_build_bad_job
-    assert_false(@hudson.trigger_build('bad_company_com'))
+    assert_false(@hudson.trigger_build(@fixtures['non_existent_job']))
   end
   
   def test_find_job
-    result = @hudson.find_job('justin_sandbox_com')
-    assert_equal(result['name'], 'justin_sandbox_com')
+    result = @hudson.find_job(@fixtures['known_job'].first)
+    assert_equal(result['name'], @fixtures['known_job'].first)
   end
   
   def teardown

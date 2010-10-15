@@ -1,0 +1,11 @@
+hudson_server: 'http://development.empirestaging.com:9050'
+known_job_with_params:
+    -   justin_sandbox_com
+    -   options:
+            issue_key: 'SP-4'
+
+known_job:
+    -   irispmt_com
+    
+non_existent_job:
+    -   bad_company_com
