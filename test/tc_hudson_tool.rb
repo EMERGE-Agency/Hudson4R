@@ -1,7 +1,6 @@
 require 'pp'
 require 'yaml'
 require 'rubygems'
-gem 'test-unit'
 require 'test/unit'
 $LOAD_PATH << './lib'
 require 'lib/hudson'
