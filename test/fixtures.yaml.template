@@ -1,0 +1,11 @@
+hudson_server: 'your_hudson_server'
+known_job_with_params:
+    -   known_job_name
+    -   options:
+            #any build params
+
+known_job:
+    -   known_job_name_without_params
+    
+non_existent_job:
+    -   bad_job_name
